@@ -2617,6 +2617,38 @@ inline double _d1_pow(double x,double y)   { return (x==0.0)?0.0:((log(x)/exp(0.
   <admst:text select="while[dynamic='yes']" format="#endif /*&lt;/dynamic_while&gt;*/\n"/>
 </admst:template>
 
+<!-- analog//case -->
+<admst:template match="case">
+  <admst:text select="case[dynamic='yes']" format="#ifdef _DYNAMIC\n"/>
+  <admst:variable name="casecondition" path="case/tree"/>
+  <admst:variable name="havedefault" string="no"/>
+  <admst:for-each select="caseitem">
+    <admst:if test="[defaultcase='yes']">
+      <admst:variable name="havedefault" string="yes"/>
+    </admst:if>
+  </admst:for-each>
+  <admst:for-each select="caseitem">
+    <admst:if test="[defaultcase='no']">
+      <admst:text format="if\n("/>
+      <admst:join select="condition" separator="||">
+        <admst:apply-templates select="." match="%(datatypename)"/>
+	<admst:text format="($casecondition)==($e)"/>
+      </admst:join>
+      <admst:text format=")\n"/>
+      <admst:apply-templates select="code" match="%(datatypename)" required="yes"/>
+      <admst:text format="else\n"/>
+    </admst:if>
+  </admst:for-each>
+  <admst:text select="[$havedefault='no']" format="{ /* no default */ }\n"/>
+  <admst:for-each select="caseitem">
+    <admst:if test="[defaultcase='yes']">
+      <admst:apply-templates select="code" match="%(datatypename)" required="yes"/>
+    </admst:if>
+  </admst:for-each>
+  <admst:text select="case[dynamic='yes']" format="#endif /*&lt;/dynamic_case&gt;*/\n"/>
+</admst:template>
+
+
 <!-- analog//callfunctions -->
 <admst:template match="callfunction">
   <admst:choose>
@@ -2697,6 +2729,13 @@ inline double _d1_pow(double x,double y)   { return (x==0.0)?0.0:((log(x)/exp(0.
     <admst:when test="adms[datatypename='whileloop']">
       <admst:apply-templates select="whileblock" match="block:local:declaration"/>
     </admst:when>
+
+    <admst:when test="adms[datatypename='case']">
+      <admst:for-each select="caseitem">
+        <admst:apply-templates select="code" match="block:local:declaration"/>
+      </admst:for-each>
+    </admst:when>
+
     <admst:when test="adms[datatypename='contribution']"/>
     <admst:when test="adms[datatypename='callfunction']"/>
     <admst:when test="adms[datatypename='nilled']"/>
