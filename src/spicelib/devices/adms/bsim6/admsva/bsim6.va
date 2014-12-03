@@ -60,11 +60,11 @@
 // Not all Verilog-A compilers are able to properly collapse
 // internal nodes  by shorting branches. To ensure minimal node
 // count, comment out the following lines:
-`define __RDSMOD__
-`define __TNOISW__
-`define __RGATEMOD__
-`define __RBODYMOD__
-`define __SHMOD__
+//`define __RDSMOD__
+//`define __TNOISW__
+//`define __RGATEMOD__
+//`define __RBODYMOD__
+//`define __SHMOD__
 
 // Normalized pinch-off voltage including PD
 `define PO_psip(vg_vfb,gamma,DPD,phif,psip) \
