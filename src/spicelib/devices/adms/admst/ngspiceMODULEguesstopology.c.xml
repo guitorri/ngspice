@@ -109,6 +109,7 @@
       <admst:apply-templates select="whileblock" match="evaluatetopology"/>
       <admst:apply-templates select="while" match="evaluatetopology"/>
     </admst:when>
+
     <admst:when test="[datatypename='conditional']">
       <admst:if test="if[nilled(variable[OPdependent='yes'])]">
         <admst:apply-templates select="if" match="evaluatetopology"/>
@@ -133,6 +134,44 @@
         </admst:choose>
       </admst:if>
     </admst:when>
+
+    <admst:when test="[datatypename='case']">
+      <admst:text format="/* -- CASE BEGIN -- */;\n"/>
+      <admst:variable name="casecondition" path="case/tree"/>
+      <admst:variable name="havedefault" string="no"/>
+      <!-- check for default -->
+      <admst:for-each select="caseitem">
+        <admst:if test="[defaultcase='yes']">
+          <admst:variable name="havedefault" string="yes"/>
+        </admst:if>
+      </admst:for-each>
+      <admst:for-each select="caseitem">
+        <admst:if test="[defaultcase='no']">
+          <!--admst:text format="/* CASE ITEM */\n"/-->
+          <admst:variable name="itemCondition" path="condition"/>
+          <admst:text format="if\n("/>
+          <admst:join select="condition" separator="||">
+            <admst:text format="($casecondition)== ($itemCondition)"/>
+          </admst:join>
+          <admst:text format=")\n"/>
+          <admst:text format="{\n"/>
+          <admst:apply-templates select="code" match="evaluatetopology"/>
+          <admst:text format="}\n"/>
+          <admst:text format="else\n"/>
+        </admst:if>
+      </admst:for-each>
+      <admst:text select="[$havedefault='no']" format="{ /* no default */ }\n"/>
+      <admst:for-each select="caseitem">
+        <admst:if test="[defaultcase='yes']">
+          <admst:text format="/* CASE DEFAULT */\n"/>
+          <admst:text format="{\n"/>
+          <admst:apply-templates select="code" match="evaluatetopology"/>
+          <admst:text format="}\n"/>
+        </admst:if>
+      </admst:for-each>
+      <admst:text format="/* -- CASE END -- */;\n"/>
+    </admst:when>
+
     <admst:when test="[datatypename='contribution']">
       <admst:if test="lhs[discipline/potential=nature]">
         <admst:choose>
