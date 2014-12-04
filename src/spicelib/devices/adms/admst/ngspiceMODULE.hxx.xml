@@ -48,6 +48,19 @@
 #define m10_asin(v10,v00,x)     v10 = (+1.0/sqrt(1-x*x));
 #define m00_atan(v00,x)         v00 = atan(x);
 #define m10_atan(v10,v00,x)     v10 = (+1.0/(1+x*x));
+
+#define m00_hypot(v00,x,y)      v00 = sqrt((x)*(x)+(y)*(y));
+#define m10_hypot(v10,v00,x,y)  v10 = (x)/(v00);
+#define m11_hypot(v11,v00,x,y)  v11 = (y)/(v00);
+#define m00_atan2(v00,x,y)      v00 = atan2(x,y);
+// TODO atan2 derivatives ?
+#define m00_acosh(v00,x)        v00 = acosh(x);
+#define m10_acosh(v10,v00,x)    v10 = (1.0/(sqrt(x-1)*sqrt(x+1)));
+#define m00_asinh(v00,x)        v00 = asinh(x);
+#define m10_asinh(v10,v00,x)    v10 = (1.0/(sqrt(x*x+1)));
+#define m00_atanh(v00,x)        v00 = atanh(x);
+#define m10_atanh(v10,v00,x)    v10 = (1.0/(1-x*x));
+
 #define m00_logE(v00,x)         v00 = log(x);
 #define m10_logE(v10,v00,x)     v10 = (1.0/x);
 #define m00_log10(v00,x)        v00 = log10(x);
