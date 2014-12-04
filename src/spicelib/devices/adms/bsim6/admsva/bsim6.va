@@ -1538,7 +1538,7 @@ parameter real SCREF 	= 1.0e-6;				//Reference distance to calculate SCA,SCB and
 
 
 // GMIN - added for convergence
-parameter real GMIN		= $simparam("gmin", 1.0e-15);
+parameter real GMIN		= 1e-15; //$simparam("gmin", 1.0e-15);
 
 // ***********************************
 //   Variables
