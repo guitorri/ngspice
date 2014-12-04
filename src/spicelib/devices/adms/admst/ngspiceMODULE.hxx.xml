@@ -1127,14 +1127,15 @@ inline double _d1_pow(double x,double y)   { return (x==0.0)?0.0:((log(x)/exp(0.
     <admst:when test="[input='yes' and parametertype='instance']">
       <admst:variable name="e" select="pInst-&gt;%(name)"/>
     </admst:when>
-    <admst:when test="[input='no' and scope='global_model']">
+    <!--admst:when test="[input='no' and scope='global_model']"-->
+    <admst:when test="[input='no']">
       <admst:variable name="e" select="pModel-&gt;%(name)"/>
     </admst:when>
     <admst:when test="[input='no' and scope='global_instance']">
       <admst:variable name="e" select="pInst-&gt;%(name)"/>
     </admst:when>
     <admst:otherwise>
-      <admst:variable name="e" select="%(name)"/>
+      <admst:variable name="e" select="pModel-&gt;%(name)"/>
     </admst:otherwise>
   </admst:choose>
 
