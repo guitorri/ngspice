@@ -222,15 +222,22 @@ typedef struct s$(module)instance {
   <admst:text select="$wnoise/item" format="  double wnoise%(index($wnoise/item,.));\n"/>
 
   /* variables */
-<admst:for-each select="variable[input='no' and scope='global_instance']">
-  <admst:value-of select="name"/>
-  <admst:apply-templates select="." match="dectype"/>
-  <admst:text format="%s;\n"/>
-  <admst:for-each select="attribute[name='info']">
+<!--admst:for-each select="variable[input='no' and scope='global_instance']"-->
+<admst:for-each select="variable[input='no']">
+  <!--admst:value-of select="name"/-->
+  <!--admst:apply-templates select="." match="dectype"/>
+  <admst:text format="%s;\n"/-->
+
+  <admst:if test="[type='integer']">  int %(name);\n</admst:if>
+  <admst:if test="[type='real']">  double %(name);\n</admst:if>
+  <admst:if test="[type='string']">  char* %(name);\n</admst:if>
+
+  <!--admst:for-each select="attribute[name='info']">
     <admst:value-of select="."/>
     <admst:text format="  /*%s*/"/>
-  </admst:for-each>
+  </admst:for-each-->
 </admst:for-each>
+
   /* states */
 <admst:for-each select="source[dynamic='yes']">
   <admst:value-of select="branch/nnode/name"/>
@@ -286,7 +293,8 @@ typedef struct s$(module)model {         /* model structure */
     <admst:text format="\n"/>
   </admst:for-each>
   /* variable */
-  <admst:for-each select="variable[input='no' and scope='global_model']">
+  <!--admst:for-each select="variable[input='no' and scope='global_model']"-->
+  <admst:for-each select="variable[input='no']">
     <admst:value-of select="name"/>
     <admst:apply-templates select="." match="dectype"/>
     <admst:text format="%s;\n"/>
