@@ -310,11 +310,21 @@ int $(module)guesstopology (SMPmatrix *matrix, CKTcircuit *ckt, $(module)model *
       <admst:apply-templates select="." match="evaluate.localvariables"/>
     </admst:if>
   </admst:for-each>
+<!--
   <admst:for-each select="$localvariables">
     <admst:if test="[type='integer']">int %(name);\n</admst:if>
     <admst:if test="[type='real']">double %(name)=0.0/0.0;\n</admst:if>
     <admst:if test="[type='string']">char* %(name);\n</admst:if>
   </admst:for-each>
+-->
+
+  <!-- add all module variables, dummies, just to reach all branches and test the node collapsing -->
+  <admst:for-each select="variable">
+      <admst:if test="[type='integer']">int %(name);\n</admst:if>
+      <admst:if test="[type='real']">double %(name)=0.0/0.0;\n</admst:if>
+      <admst:if test="[type='string']">char* %(name);\n</admst:if>
+  </admst:for-each>
+
   <admst:for-each select="analog/code[datatypename='block']/item">
     <admst:if test="[(datatypename!='block') or (datatypename='block'
          and name!='initial_model' and name!='initializeModel' and name!='initial_instance' and name!='initializeInstance')]">
